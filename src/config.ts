@@ -1,13 +1,14 @@
 import { readFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { resolve, join } from "node:path";
 import { z } from "zod";
 import { Commitment } from "@solana/web3.js";
+import os from "os";
 
 const CommitmentSchema = z.enum(["processed", "confirmed", "finalized"]);
 
 const ConfigSchema = z.object({
   rpcUrl: z.string().url(),
-  programId: z.string(),
+  programId: z.string().optional(),
   wallet: z.string(),
   commitment: CommitmentSchema.default("confirmed"),
 });
@@ -30,10 +31,10 @@ const DEFAULT_CONFIG_NAME = "percolator-cli.json";
  * Load and validate config, with CLI flag overrides.
  */
 export function loadConfig(flags: GlobalFlags): Config {
-  // Find config file
+  // 1. Try to load from file
   const configPath = flags.config ?? findConfig();
-
   let fileConfig: Partial<Config> = {};
+
   if (configPath && existsSync(configPath)) {
     try {
       const raw = readFileSync(configPath, "utf-8");
@@ -43,15 +44,28 @@ export function loadConfig(flags: GlobalFlags): Config {
     }
   }
 
-  // Merge: CLI flags override file config
+  // 2. Resolve wallet path (CLI > Env > File > Default)
+  // Default on Windows: %USERPROFILE%/.config/solana/id.json
+  // Default on Unix: ~/.config/solana/id.json
+  const defaultWalletPath = join(os.homedir(), ".config", "solana", "id.json");
+
+  const rawWalletPath =
+    flags.wallet ??
+    process.env.WALLET_PATH ??
+    fileConfig.wallet ??
+    defaultWalletPath;
+
+  const wallet = expandPath(rawWalletPath);
+
+  // 3. Merge everything
   const merged = {
-    rpcUrl: flags.rpc ?? fileConfig.rpcUrl ?? "https://api.mainnet-beta.solana.com",
-    programId: flags.program ?? fileConfig.programId,
-    wallet: flags.wallet ?? fileConfig.wallet ?? "~/.config/solana/id.json",
+    rpcUrl: flags.rpc ?? process.env.SOLANA_RPC_URL ?? fileConfig.rpcUrl ?? "https://api.devnet.solana.com",
+    programId: flags.program ?? process.env.PROGRAM_ID ?? fileConfig.programId,
+    wallet,
     commitment: flags.commitment ?? fileConfig.commitment ?? "confirmed",
   };
 
-  // Validate
+  // 4. Validate
   const result = ConfigSchema.safeParse(merged);
   if (!result.success) {
     const issues = result.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`);
@@ -70,12 +84,11 @@ function findConfig(): string | undefined {
 }
 
 /**
- * Expand ~ to home directory.
+ * Expand ~ to home directory and resolve relative paths.
  */
 export function expandPath(p: string): string {
-  if (p.startsWith("~/")) {
-    const home = process.env.HOME ?? process.env.USERPROFILE ?? "";
-    return resolve(home, p.slice(2));
+  if (p.startsWith("~")) {
+    return join(os.homedir(), p.slice(1));
   }
   return resolve(p);
 }

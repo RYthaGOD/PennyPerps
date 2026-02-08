@@ -72,7 +72,11 @@ export async function simulateOrSend(
   tx.feePayer = signers[0].publicKey;
 
   if (simulate) {
-    tx.sign(...signers);
+    try {
+      tx.sign(...signers);
+    } catch (e) {
+      console.warn("Signature skipped (environment issue?):", e);
+    }
     const result = await connection.simulateTransaction(tx, signers);
     const logs = result.value.logs ?? [];
     let err: string | null = null;

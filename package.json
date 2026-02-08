@@ -19,11 +19,20 @@
     "@pythnetwork/pyth-solana-receiver": "^0.13.0",
     "@solana/spl-token": "^0.3.11",
     "@solana/web3.js": "^1.95.4",
+    "@types/ws": "^8.18.1",
+    "bs58": "^6.0.0",
+    "clsx": "^2.1.1",
     "commander": "^12.1.0",
-    "zod": "^3.23.8"
+    "lucide-react": "^0.563.0",
+    "tailwind-merge": "^3.4.0",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1",
+    "ws": "^8.19.0",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@types/node": "^20.17.10",
+    "@types/node": "^20.19.33",
     "dotenv": "^17.2.4",
     "tsup": "^8.3.5",
     "tsx": "^4.21.0",

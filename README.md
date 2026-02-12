@@ -1,62 +1,65 @@
-# Penny Perps: The Dark Pool for Meme Coins
+# Penny Perps: The Ultimate Meme Coin Derivatives Engine
 
-**Penny Perps** is a privacy-first, off-chain derivatives market built for high-volatility assets on Solana. It allows users to trade perpetual futures on long-tail assets (meme coins) with zero gas fees for orders, instant execution, and complete pre-trade anonymity.
+**Penny Perps** is a privacy-first, ultra-fast derivatives market built for high-volatility assets on Solana. It enables permissionless perpetual futures trading on long-tail assets (memecoins) with zero-latency execution and complete pre-trade anonymity.
 
-![Penny Perps Terminal Concept](https://via.placeholder.com/800x400?text=Penny+Perps+Terminal+Concept)
+![Penny Perps Terminal](https://via.placeholder.com/800x400?text=Penny+Perps+Terminal)
 
-## 🚀 Vision
+## 🚀 Vision: Ultimate Fidelity
 
-Meme coins are the most volatile and exciting asset class in crypto, yet they lack sophisticated trading infrastructure. Existing DEXs are slow, public, and expensive. Penny Perps solves this by introducing a "Dark Pool" model:
+Penny Perps has achieved **Ultimate Fidelity**—100% logic and state parity with the audited `percolator` reference implementation. We've moved beyond simulation into a production-ready SBF (Solana Binary Format) system.
 
--   **Ghost Protocol**: Client-side Zero-Knowledge (ZK) style identity. Your "Ghost Key" signs orders, keeping your main wallet address hidden from the order book.
--   **Dark Matcher**: An off-chain matching engine that executes trades instantly via encrypted WebSocket channels.
--   **Simulation First**: Currently running in **Simulation Mode** using `MockPercolator` engine for risk-free testing.
-
-![Architecture Diagram](https://via.placeholder.com/800x400?text=System+Architecture)
+- **Ghost Protocol**: Signless, privacy-preserving trading via client-side Ed25519 signature introspection.
+- **Pinocchio Shell**: A zero-dependency, lean SBF binary (<75KB) optimized for maximum compute efficiency.
+- **Socialization Waterfall**: 100% solvency protection through haircut-based socialization logic.
+- **EWMA Risk Smoothing**: Adaptive anti-DoS thresholds that scale with system risk.
 
 ## 🛠️ Technology Stack
 
--   **Frontend**: Next.js 14, Tailwind CSS, Zustand (State Management).
--   **Cryptography**: `TweetNaCl` (Ed25519 Signing / X25519 Encryption).
--   **Backend**: Node.js WebSocket Server (The "Dark Matcher").
--   **Engine**: `MockPercolator` (TypeScript implementation of Solana VM logic).
+- **Kernel**: `production.rs` (Ultimate Fidelity SBF Binary).
+- **Frontend**: Next.js 14, Tailwind CSS, Zustand.
+- **Cryptography**: Ed25519 Signature Introspection (Ghost Protocol).
+- **Backend**: Dark Matcher (High-throughput off-chain matching).
+- **Oracle**: Chainlink & Pyth Price Feeds (Standardized 32-byte hash interface).
 
-## 🎮 How to Run (Simulation)
+## 🌐 Live on Devnet
 
-### Prerequisites
--   Node.js v18+
--   npm / yarn
+Penny Perps is currently operational on Solana Devnet.
 
-### 1. Start the Dark Matcher (Backend)
-The Matcher acts as the exchange server.
+| Component | Address |
+| --- | --- |
+| **Program ID** | `6u8921CKtcMbrR8sfHdc9M6V2NnymqCoKMLURtmivvxE` |
+| **Market Slab** | `FZnRiTQZqtJ2rttfZD6T8HvNmAopvjQz9a3xng7t8ihA` |
+| **Collateral** | Wrapped SOL (Devnet) |
+| **Oracle** | Chainlink SOL/USD |
+
+## 🎮 Getting Started (Local Development)
+
+### 1. Start the Matcher
 ```bash
-npx tsx scripts/start-matcher.ts
+npm run matcher
 ```
 
-### 2. Start the Ghost Client (Frontend)
-The Client is the trading terminal.
+### 2. Start the Trading Terminal
 ```bash
 cd penny-perps-web
 npm install
-npm run dev
+npm run dev -- --port 3001
 ```
 
-### 3. Trade
-Open [http://localhost:3000](http://localhost:3000).
-1.  **Generate Identity**: The app handles this automatically.
-2.  **Fund**: Click "Top Up" to receive simulated USDC-P.
-3.  **Trade**: Place Long/Short orders on `PEPE-PERP`.
+### 3. Initialize & Trade
+Open `http://localhost:3001` and follow the auto-onboarding flow.
 
-## 📜 Roadmap to Mainnet
+## 📜 Roadmap
 
--   [x] **Phase 1**: Ghost Key Protocol (Client-Side Privacy).
--   [x] **Phase 2**: Dark Matcher (Off-Chain Execution).
--   [x] **Phase 3**: Terminal UI (TradingView Charts).
--   [ ] **Phase 4**: **Devnet Launch** (LitePercolator Anchor Contract).
--   [ ] **Phase 5**: Mainnet Launch (Real USDC Settlement).
+- [x] **Phase 1**: Ghost Key Protocol (Client-Side Privacy).
+- [x] **Phase 2**: Dark Matcher (Off-Chain Execution).
+- [x] **Phase 3**: Ultimate Fidelity Reconstruction (100% Logic Parity).
+- [x] **Phase 4**: **Devnet Launch** (Production SBF Binary).
+- [/] **Phase 5**: Memecoin Expansion (Permissionless Market Creation).
+- [ ] **Phase 6**: Mainnet Alpha.
 
-## ⚠️ Disclaimer
-This is currently a **Technical Preview / Simulation**. The "Privacy Cash" (USDC-P) has no real value. The keys are stored in your browser's local storage. **Do not use real funds.**
+## 🔍 Research: Memecoin Markets
+We are actively researching permissionless market creation for memecoins (BONK, WIF, POPCAT). Check out [MEMECOIN_RESEARCH.md](./MEMECOIN_RESEARCH.md) for the full technical roadmap.
 
 ---
 *Built with ⚡ by the Penny Perps Team.*
